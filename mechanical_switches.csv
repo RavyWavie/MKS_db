@@ -1,0 +1,12 @@
+brand,brand_country,brand_website,model,switch_type,actuation_force_g,bottom_out_force_g,pre_travel_mm,total_travel_mm,stem_material,housing_material,factory_lubed,purchase_url
+Cherry,Germany,www.cherry.de,MX2A Black,Linear,60.0,90.0,2.0,4.0,POM,Nylon,t,https://divinikey.com/products/cherry-mx2a-black-linear-switches
+Cherry,Germany,www.cherry.de,MX2A Black,Linear,60.0,90.0,2.0,4.0,POM,Nylon,t,https://omnitype.com/products/cherry-mx2a-black-linear-switches
+Cherry,Germany,www.cherry.de,MX2A Brown,Tactile,48.0,60.0,2.0,4.0,POM,Nylon,t,
+Cherry,Germany,www.cherry.de,MX2A Silent Red,Linear,45.0,65.0,1.9,3.7,POM,Nylon,t,
+Gateron,China,www.gateron.com,G Pro 3.0 Blue,Clicky,50.0,60.0,2.0,4.0,POM,PC,t,
+Gateron,China,www.gateron.com,Jupiter Banana,Tactile,59.0,60.0,2.0,3.4,POM,PC,t,
+Gateron,China,www.gateron.com,Milky Yellow Pro,Linear,50.0,62.0,2.0,4.0,POM,Nylon,t,
+Gateron,China,www.gateron.com,Oil King,Linear,55.0,65.0,2.0,4.0,POM,Nylon,t,
+Keygeek,China,www.keygeek.cn,Crepe,Linear,37.0,45.0,2.0,3.6,PBT,PC,t,
+Keygeek,China,www.keygeek.cn,Xiaoba V2,Linear,40.0,48.0,2.0,3.6,U4,Nylon,f,
+Keygeek,China,www.keygeek.cn,Y2,Linear,32.0,37.0,2.0,3.6,U5/UPE,PA12,t,https://monacokeys.de/en/products/keygeek-y2-linear-switches
