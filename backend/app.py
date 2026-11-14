@@ -50,6 +50,11 @@ def stylesheet(filename):
     return send_from_directory(frontend_dir / "css", filename)
 
 
+@app.get("/images/<path:filename>")
+def image(filename):
+    return send_from_directory(frontend_dir / "images", filename)
+
+
 @app.get("/api/switches")
 def get_switches():
     search = request.args.get("search", "").strip()

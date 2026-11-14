@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+  <main class="page">
   <h1>Mechanical Keyboard Switches</h1>
   <nav aria-label="Dataset"><a href="/datatable.html">Browse and filter the switch table</a></nav>
   <p><strong>Warning:</strong> This is a small, non-comprehensive dataset created for a university assignment. It is not intended to be an authoritative catalog of mechanical keyboard switches, and its coverage is very limited (for now).</p>
@@ -16,6 +17,7 @@
   <p>This open dataset catalogs mechanical keyboard switch models, their brands, and selected technical specifications useful for comparing switches. Where available, it also includes links to merchants selling particular models.</p>
   <p>The data is maintained in a PostgreSQL database with three tables: <code>switch_brand</code>, <code>switch_model</code>, and <code>purchase_link</code>.</p>
   <h2>Dataset metadata</h2>
+  <div class="table-container" tabindex="0" role="region" aria-label="Dataset metadata">
   <table>
     <thead><tr><th scope="col">Metadata</th><th scope="col">Value</th></tr></thead>
     <tbody>
@@ -31,6 +33,7 @@
       <tr><th scope="row">Number of brands</th><td>3</td></tr>
     </tbody>
   </table>
+  </div>
   <h2>Data files</h2>
   <ul>
     <li><a href="/data/mechanical_switches.csv" download><code>data/mechanical_switches.csv</code></a> — flat representation of the dataset; a switch may appear in multiple rows if it has multiple purchase links.</li>
@@ -40,6 +43,7 @@
   </ul>
   <p>Internal database IDs are intentionally excluded from the CSV and JSON exports.</p>
   <h2>Attributes</h2>
+  <div class="table-container" tabindex="0" role="region" aria-label="Dataset attributes">
   <table>
     <thead><tr><th scope="col">Attribute</th><th scope="col">Meaning</th></tr></thead>
     <tbody>
@@ -59,10 +63,18 @@
       <tr><th scope="row"><code>purchase_links</code> (JSON)</th><td>Array of seller links for the switch</td></tr>
     </tbody>
   </table>
+  </div>
   <p>A missing purchase link means <strong>no link is recorded</strong>, not necessarily that a switch is unavailable. Some other attributes may also be missing when information is unavailable.</p>
   <p><strong>Note:</strong> CSV repeats the parent switch data for each purchase link, which is a clunky solution. JSON does not have this issue, as it is hierarchical.</p>
   <p><strong>Note:</strong> The housing of a switch is made up of multiple parts which don't necessarily use the same material. The 'housing_material' attribute records the most prevalent material.</p>
   <h2>License</h2>
   <p>This dataset is published under the <strong>Creative Commons Attribution 4.0 International (CC BY 4.0)</strong> license. You may share and adapt the data, including commercially, provided appropriate attribution is given. See the repository's <a href="/LICENSE"><code>LICENSE</code></a> file for the full terms.</p>
+  <footer class="site-footer">
+    <a href="https://github.com/RavyWavie/MKS_db">
+      <img src="/images/github.svg" width="20" height="20" alt="">
+      View on GitHub
+    </a>
+  </footer>
+  </main>
 </body>
 </html>

@@ -8,11 +8,15 @@
   <script src="js/datatable.js" defer></script>
 </head>
 <body>
+  <main class="page page-wide">
   <h1>Mechanical Keyboard Switches</h1>
   <p><a href="/index.html">Dataset overview and full downloads</a></p>
   <form id="filter-form">
+    <div class="filter-field">
     <label for="search">Search</label>
     <input id="search" name="search" type="search">
+    </div>
+    <div class="filter-field">
     <label for="attribute">Attribute</label>
     <select id="attribute" name="attribute">
       <option value="all">All attributes</option>
@@ -30,11 +34,17 @@
       <option value="factory_lubed">Factory lubed (true/false)</option>
       <option value="purchase_links">Purchase links</option>
     </select>
+    </div>
+    <div class="filter-actions">
     <button type="submit">Filter</button>
     <button type="reset">Clear</button>
+    </div>
+    <div class="downloads">
     <a id="download-csv" download="mechanical_switches_filtered.csv">Download CSV</a>
     <a id="download-json" download="mechanical_switches_filtered.json">Download JSON</a>
+    </div>
   </form>
+  <div class="table-container switch-table" tabindex="0" role="region" aria-label="Switch models and specifications">
   <table>
     <thead>
       <tr>
@@ -55,6 +65,14 @@
     </thead>
     <tbody id="switches"></tbody>
   </table>
+  </div>
   <p id="status" role="status"></p>
+  <footer class="site-footer">
+    <a href="https://github.com/RavyWavie/MKS_db">
+      <img src="/images/github.svg" width="20" height="20" alt="">
+      View on GitHub
+    </a>
+  </footer>
+  </main>
 </body>
 </html>
