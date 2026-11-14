@@ -9,7 +9,29 @@
 </head>
 <body>
   <h1>Mechanical Keyboard Switches</h1>
-  <p id="status" role="status"></p>
+  <form id="filter-form">
+    <label for="search">Search</label>
+    <input id="search" name="search" type="search">
+    <label for="attribute">Attribute</label>
+    <select id="attribute" name="attribute">
+      <option value="all">All attributes</option>
+      <option value="brand">Brand</option>
+      <option value="brand_country">Brand country</option>
+      <option value="brand_website">Brand website</option>
+      <option value="model">Model</option>
+      <option value="switch_type">Switch type</option>
+      <option value="actuation_force_g">Actuation force</option>
+      <option value="bottom_out_force_g">Bottom-out force</option>
+      <option value="pre_travel_mm">Pre-travel</option>
+      <option value="total_travel_mm">Total travel</option>
+      <option value="stem_material">Stem material</option>
+      <option value="housing_material">Housing material</option>
+      <option value="factory_lubed">Factory lubed (true/false)</option>
+      <option value="purchase_links">Purchase links</option>
+    </select>
+    <button type="submit">Filter</button>
+    <button type="reset">Clear</button>
+  </form>
   <table>
     <thead>
       <tr>
@@ -30,5 +52,6 @@
     </thead>
     <tbody id="switches"></tbody>
   </table>
+  <p id="status" role="status"></p>
 </body>
 </html>

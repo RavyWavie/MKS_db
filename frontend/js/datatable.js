@@ -1,5 +1,9 @@
 const tbody = document.querySelector("#switches");
 const status = document.querySelector("#status");
+const form = document.querySelector("#filter-form");
+const search = document.querySelector("#search");
+const attribute = document.querySelector("#attribute");
+let activeRequest;
 
 const columns = [
   "brand", "brand_country", "brand_website", "model", "switch_type",
@@ -28,10 +32,14 @@ function appendLink(cell, address) {
 }
 
 async function loadSwitches() {
+  activeRequest?.abort();
+  const controller = new AbortController();
+  activeRequest = controller;
   status.textContent = "Loading…";
 
   try {
-    const response = await fetch("/api/switches");
+    const params = new URLSearchParams({ search: search.value, attribute: attribute.value });
+    const response = await fetch(`/api/switches?${params}`, { signal: controller.signal });
     if (!response.ok) {
       throw new Error("Could not load switches from the database.");
     }
@@ -60,10 +68,26 @@ async function loadSwitches() {
       tbody.append(row);
     }
 
-    status.textContent = `${switches.length} models loaded.`;
+    status.textContent = switches.length === 0 ? "No matching models." : "";
   } catch (error) {
+    if (error.name === "AbortError") return;
     status.textContent = error.message;
   }
 }
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  loadSwitches();
+});
+
+form.addEventListener("reset", () => {
+  search.value = "";
+  attribute.value = "all";
+  loadSwitches();
+});
+
+search.addEventListener("input", () => {
+  if (search.value === "") loadSwitches();
+});
 
 loadSwitches();

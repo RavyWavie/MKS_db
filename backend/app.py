@@ -2,11 +2,19 @@ import os
 from pathlib import Path
 
 import psycopg
+from psycopg import sql
 from psycopg.rows import dict_row
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, jsonify, request, send_from_directory
 
 frontend_dir = Path(__file__).resolve().parent.parent / "frontend"
 app = Flask(__name__, static_folder=str(frontend_dir / "js"), static_url_path="/js")
+
+FILTER_FIELDS = (
+    "brand", "brand_country", "brand_website", "model", "switch_type",
+    "actuation_force_g", "bottom_out_force_g", "pre_travel_mm",
+    "total_travel_mm", "stem_material", "housing_material", "factory_lubed",
+    "purchase_links",
+)
 
 
 @app.get("/")
@@ -26,10 +34,23 @@ def stylesheet(filename):
 
 @app.get("/api/switches")
 def get_switches():
+    search = request.args.get("search", "").strip()
+    attribute = request.args.get("attribute", "all")
+    if attribute != "all" and attribute not in FILTER_FIELDS:
+        return jsonify({"error": "Unknown search attribute."}), 400
+
+    fields = FILTER_FIELDS if attribute == "all" else (attribute,)
+    # Treat %, _ and backslashes as literal search text, not LIKE patterns.
+    pattern = "%" + search.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%"
+    conditions = sql.SQL(" OR ").join(
+        sql.SQL("CAST({} AS text) ILIKE %(pattern)s").format(sql.Identifier(field))
+        for field in fields
+    )
     try:
         with psycopg.connect(os.environ["DATABASE_URL"], row_factory=dict_row) as connection:
             with connection.cursor() as cursor:
-                cursor.execute("""
+                query = sql.SQL("""
+                    WITH switches AS (
                     SELECT b.name AS brand,
                            b.country AS brand_country,
                            b.website AS brand_website,
@@ -50,8 +71,12 @@ def get_switches():
                            ) AS purchase_links
                     FROM switch_model AS m
                     JOIN switch_brand AS b ON b.brand_id = m.brand_id
-                    ORDER BY b.name, m.name
-                """)
+                    )
+                    SELECT * FROM switches
+                    WHERE {conditions}
+                    ORDER BY brand, model
+                """).format(conditions=conditions if search else sql.SQL("TRUE"))
+                cursor.execute(query, {"pattern": pattern})
                 switches = cursor.fetchall()
     except psycopg.Error:
         app.logger.exception("Failed to load switches from PostgreSQL")
