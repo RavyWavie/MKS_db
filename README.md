@@ -15,7 +15,7 @@ The data is maintained in a PostgreSQL database with three tables: `switch_brand
 | Title | Mechanical Keyboard Switches |
 | Description | Switch models, associated brands, mechanical specifications, and optional purchase links |
 | Author | Patrick Vincek |
-| Version | 1.0 |
+| Version | 2.0 |
 | Language | English (field names and values) |
 | License | Creative Commons Attribution 4.0 International (CC BY 4.0) |
 | Dataset formats | CSV and JSON |
@@ -25,9 +25,10 @@ The data is maintained in a PostgreSQL database with three tables: `switch_brand
 
 ## Data files
 
-- `mechanical_switches.csv` — flat representation of the dataset; a switch may appear in multiple rows if it has multiple purchase links.
-- `mechanical_switches.json` — one object per switch model, with purchase links represented as an array (which may be empty).
-- `database_dump.sql` — PostgreSQL database dump containing the schema and stored records.
+- `data/mechanical_switches.csv` — flat representation of the dataset; a switch may appear in multiple rows if it has multiple purchase links.
+- `data/mechanical_switches.json` — one object per switch model, with purchase links represented as an array (which may be empty).
+- `data/schema.json` — JSON Schema describing the dataset.
+- `data/database_dump.sql` — PostgreSQL database dump containing the schema and stored records.
 
 Internal database IDs are intentionally excluded from the CSV and JSON exports.
 
@@ -55,21 +56,33 @@ A missing purchase link means **no link is recorded**, not necessarily that a sw
 > **Note:** CSV repeats the parent switch data for each purchase link, which is a clunky solution. JSON does not have this issue, as it is hierarchical.
 > **Note:** The housing of a switch is made up of multiple parts which don't necessarily use the same material. The 'housing_material' attribute records the most prevalent material.
 
-## Extras
+## Web application
 
-The extra directory contains development files and scripts, if you want to use them.
+Run from the repository root:
 
-| File | Usage |
+```bash
+docker compose up --build
+```
+
+Open <http://localhost:5000/> to browse, filter, and download the dataset.
+
+For pgAdmin at <http://localhost:5050/>, start with `docker compose --profile dev up` instead.
+
+## Development files
+
+| Path | Usage |
 |---|---|
-| `compose.yaml` | A Docker Compose setup with PostgreSQL and pgAdmin. Start with `docker compose up` |
-| `mechanical_switches_setup.sql` | SQL file used for building the database. Should have a similar effect as running the database dump, but with sane formatting and is more easily reproducible. |
-| `dump_db.sh` | Creates a database dump file. Check the script to see if you need to change some variables before running. |
-| `export.sh` | Exports the database into CSV and JSON files. Check the script to see if you need to change some variables before running. |
+| `compose.yaml` | Runs Flask, PostgreSQL, and optional pgAdmin |
+| `backend/` | Flask backend |
+| `frontend/` | HTML, CSS, and JavaScript |
+| `db/mechanical_switches_setup.sql` | Initializes the database with schema and sample data |
+| `scripts/dump_db.sh` | Creates `database_dump.sql` in the working directory. Move it into `data/` to update the saved dump. |
+| `scripts/export.sh` | Exports the database into CSV and JSON. Run `OUTPUT_DIR=data bash scripts/export.sh` from the repository root to update the downloadable files. |
 
 **Note:** JSON will be exported in a concise format. If you wish to have a more readable format, you can run the following command (if you have Python installed):
 
 ```bash
-python3 -m json.tool mechanical_switches.json > mechanical_switches_pretty.json
+python3 -m json.tool data/mechanical_switches.json > mechanical_switches_pretty.json
 ```
 
 ## License

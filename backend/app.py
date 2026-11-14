@@ -4,9 +4,10 @@ from pathlib import Path
 import psycopg
 from psycopg import sql
 from psycopg.rows import dict_row
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, abort, jsonify, redirect, request, send_from_directory, url_for
 
 frontend_dir = Path(__file__).resolve().parent.parent / "frontend"
+data_dir = frontend_dir.parent / "data"
 app = Flask(__name__, static_folder=str(frontend_dir / "js"), static_url_path="/js")
 
 FILTER_FIELDS = (
@@ -18,8 +19,25 @@ FILTER_FIELDS = (
 
 
 @app.get("/")
+def home():
+    return redirect(url_for("index"))
+
+
+@app.get("/index.html")
 def index():
-    return {"message": "Flask is up and running!"}
+    return send_from_directory(frontend_dir, "index.html")
+
+
+@app.get("/data/<filename>")
+def download_dataset(filename):
+    if filename not in {"mechanical_switches.csv", "mechanical_switches.json", "schema.json", "database_dump.sql"}:
+        abort(404)
+    return send_from_directory(data_dir, filename, as_attachment=True)
+
+
+@app.get("/LICENSE")
+def license_text():
+    return send_from_directory(frontend_dir.parent, "LICENSE", mimetype="text/plain")
 
 
 @app.get("/datatable.html")

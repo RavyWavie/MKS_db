@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "http://localhost:5000/data/schema.json",
+  "title": "Mechanical Keyboard Switches",
+  "description": "Switch models, associated brands, mechanical specifications, and optional purchase links",
+  "type": "array",
+  "items": {
+    "title": "Mechanical keyboard switch",
+    "description": "One switch model with its brand, specifications, and recorded seller links.",
+    "type": "object",
+    "properties": {
+      "brand": {
+        "title": "Brand",
+        "description": "Brand under which the switch is sold.",
+        "type": "string"
+      },
+      "brand_country": {
+        "title": "Brand country",
+        "description": "Country associated with the brand; null if unknown.",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "brand_website": {
+        "title": "Brand website",
+        "description": "Brand website; may omit the URL scheme and may be null.",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "model": {
+        "title": "Model",
+        "description": "Switch model name.",
+        "type": "string"
+      },
+      "switch_type": {
+        "title": "Switch type",
+        "description": "Switch mechanism category.",
+        "type": "string",
+        "enum": [
+          "Linear",
+          "Tactile",
+          "Clicky"
+        ]
+      },
+      "actuation_force_g": {
+        "title": "Actuation force",
+        "description": "Nominal actuation force in gram-force (gf); null if unknown.",
+        "type": [
+          "number",
+          "null"
+        ],
+        "exclusiveMinimum": 0
+      },
+      "bottom_out_force_g": {
+        "title": "Bottom-out force",
+        "description": "Nominal force at full key travel in gram-force (gf); null if unknown.",
+        "type": [
+          "number",
+          "null"
+        ],
+        "exclusiveMinimum": 0
+      },
+      "pre_travel_mm": {
+        "title": "Pre-travel",
+        "description": "Travel before actuation in millimeters; null if unknown.",
+        "type": [
+          "number",
+          "null"
+        ],
+        "minimum": 0
+      },
+      "total_travel_mm": {
+        "title": "Total travel",
+        "description": "Total key travel in millimeters; null if unknown.",
+        "type": [
+          "number",
+          "null"
+        ],
+        "exclusiveMinimum": 0
+      },
+      "stem_material": {
+        "title": "Stem material",
+        "description": "Switch stem material; null if unknown.",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "housing_material": {
+        "title": "Housing material",
+        "description": "Most prevalent housing material; null if unknown.",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "factory_lubed": {
+        "title": "Factory lubed",
+        "description": "Whether the switch is factory-lubricated; null if unknown.",
+        "type": [
+          "boolean",
+          "null"
+        ]
+      },
+      "purchase_links": {
+        "title": "Purchase links",
+        "description": "Seller URLs; an empty array means no links are recorded.",
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "title": "Purchase URL",
+          "description": "Full URL of a seller listing for this switch.",
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "required": [
+      "brand",
+      "brand_country",
+      "brand_website",
+      "model",
+      "switch_type",
+      "actuation_force_g",
+      "bottom_out_force_g",
+      "pre_travel_mm",
+      "total_travel_mm",
+      "stem_material",
+      "housing_material",
+      "factory_lubed",
+      "purchase_links"
+    ],
+    "additionalProperties": false
+  }
+}

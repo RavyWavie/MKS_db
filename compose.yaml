@@ -6,6 +6,8 @@ services:
     volumes:
       - ./backend:/app:ro
       - ./frontend:/frontend:ro
+      - ./data:/data:ro
+      - ./LICENSE:/LICENSE:ro
     environment:
       PYTHONDONTWRITEBYTECODE: "1"
       DATABASE_URL: postgresql://postgres:secret@postgres:5432/MKS_db
