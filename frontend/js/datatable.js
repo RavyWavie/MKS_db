@@ -3,6 +3,8 @@ const status = document.querySelector("#status");
 const form = document.querySelector("#filter-form");
 const search = document.querySelector("#search");
 const attribute = document.querySelector("#attribute");
+const csvDownload = document.querySelector("#download-csv");
+const jsonDownload = document.querySelector("#download-json");
 let activeRequest;
 
 const columns = [
@@ -11,6 +13,31 @@ const columns = [
   "total_travel_mm", "stem_material", "housing_material", "factory_lubed",
   "purchase_links",
 ];
+
+function csvValue(value) {
+  if (value == null) return "";
+  if (typeof value === "boolean") return value ? "t" : "f";
+  return `"${String(value).replaceAll('"', '""')}"`;
+}
+
+function buildCSV(switches) {
+  const fields = columns.filter(column => column !== "purchase_links");
+  const rows = [[...fields, "purchase_url"].join(",")];
+
+  for (const item of switches) {
+    const links = item.purchase_links.length ? item.purchase_links : [null];
+    for (const link of links) {
+      rows.push([...fields.map(field => item[field]), link].map(csvValue).join(","));
+    }
+  }
+
+  return rows.join("\r\n") + "\r\n";
+}
+
+function setDownload(link, content, type) {
+  if (link.hasAttribute("href")) URL.revokeObjectURL(link.href);
+  link.href = URL.createObjectURL(new Blob([content], { type }));
+}
 
 function appendLink(cell, address) {
   if (!address) return;
@@ -67,7 +94,8 @@ async function loadSwitches() {
       }
       tbody.append(row);
     }
-
+    setDownload(csvDownload, buildCSV(switches), "text/csv;charset=utf-8");
+    setDownload(jsonDownload, JSON.stringify(switches, null, 2), "application/json");
     status.textContent = switches.length === 0 ? "No matching models." : "";
   } catch (error) {
     if (error.name === "AbortError") return;
